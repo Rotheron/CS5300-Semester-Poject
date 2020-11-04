@@ -1,5 +1,6 @@
 import pandas as pd
 import mariadb as db
+import math
 import re 
 
 
@@ -43,6 +44,23 @@ def title_clean_1(data):
     #Write out the book number, and the clean title to a csv so we can stitch it back together later 
     titleExport.to_csv(r'Clean_Data/titles1.csv')
 
+def pubdate_clean(data):
+    pubdate = data['pubdate']
+    bookNum = data['book']
+
+    idxToPubDate = dict()
+    idxToPubDate["book"] = "PubDate"
+
+    for i in range(len(pubdate)):
+        #check if the publishing date is NaN and put in NULL if it is
+        if math.isnan(pubdate[i]):
+            idxToPubDate[bookNum[i]] = "NULL" #Hopefully DBeaver will read in "NULL" as actually NULL and not just a string
+        else:
+            idxToPubDate[bookNum[i]] = str(pubdate[i])
+
+    PubDateExport = pd.DataFrame.from_dict(idxToPubDate, orient="index")
+    PubDateExport.to_csv('Clean_Data/pubdate.csv')
+
 # def db_connection():
 #     try:
 #         conn = db.connect(
@@ -58,10 +76,11 @@ def title_clean_1(data):
 
 if __name__ == "__main__":
     #Read in raw data, inventory.csv
-    data = pd.read_csv('Cole_Processing_Data/inventory.csv', encoding = "ISO-8859-1")   
+    data = pd.read_csv('inventory_copy.csv', encoding = "ISO-8859-1")   
     df = pd.DataFrame(data, columns= ['book','title','author','binding','pubdate','publisher','isbn10','isbn13','condition','dustjacket','signed','edition','price','descr','synopsis','about_auth'])
     
 
     #book_clean(df)
-    title_clean_1(df)
+    #title_clean_1(df)
+    pubdate_clean(df)
 
