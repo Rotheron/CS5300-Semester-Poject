@@ -9,18 +9,20 @@ def book_clean(data):
     print(s)
 
 
-def title_clean(data):
-    #Read in raw title column.
+def title_clean_1(data):
+    #Read in "book" and the raw "title" column.
+    book_nos = data['book']
     titles = data['title']
     
-    #Indexes of valid Titles (0 through 12042)
+    #Key = "book" from raw data, value = clean title  
     idxToTitle = dict()
+    idxToTitle["book"] = "title"    #Hardcode in the column names for the csv when rendered in Excel
 
     #Keep only titles consisting of just these characters
     validChars = list("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ")
     
     #Does this entire title consist of just validChars?
-    titleIsValid = True
+    validTitle = True
 
     #Iterate over every title and store the dataframe indeces of titles with only alphabetic characters in it
     for i in range(len(titles)):                    #Title Loop
@@ -30,13 +32,15 @@ def title_clean(data):
                 validTitle = False
                 break
 
+        #Title was clean
         if(validTitle):
-            idxToTitle[i] = str(titles[i])
+            idxToTitle[book_nos[i]] = str(titles[i])
 
+    #Prepare pandas to write out to csv
     titleExport = pd.DataFrame.from_dict(idxToTitle, orient="index")
 
-    #Write output to csv
-    titleExport.to_csv(r'titles.csv')
+    #Write out the book number, and the clean title to a csv so we can stitch it back together later 
+    titleExport.to_csv(r'Clean_Data/titles1.csv')
 
 def db_connection():
     try:
@@ -52,9 +56,9 @@ def db_connection():
         sys.exit(1)
 
 if __name__ == "__main__":
-    data = pd.read_csv('inventory.csv', encoding = "ISO-8859-1")   
+    #Read in raw data, inventory.csv
+    data = pd.read_csv('Cole_Processing_Data/inventory.csv', encoding = "ISO-8859-1")   
     df = pd.DataFrame(data, columns= ['book','title','author','binding','pubdate','publisher','isbn10','isbn13','condition','dustjacket','signed','edition','price','descr','synopsis','about_auth'])
     
-    
     #book_clean(df)
-    title_clean(df)
+    title_clean_1(df)
