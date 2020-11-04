@@ -3,7 +3,7 @@ import mariadb as db
 import re 
 import sys
 # cd into this directory to run the code \\minerfiles.mst.edu\dfs\users\ztbmwf\CS5300\Semester Project
-
+#push test
 
 def book_clean(data):
     # preprocess and clean the data for the "book" column in the data frame (df)
