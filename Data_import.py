@@ -61,6 +61,32 @@ def pubdate_clean(data):
     PubDateExport = pd.DataFrame.from_dict(idxToPubDate, orient="index")
     PubDateExport.to_csv('Clean_Data/pubdate.csv')
 
+
+def condition_clean_1(data):
+    #Read in "book" and the raw "condition" column.
+    book_nos = data['book']
+    conditions = data['condition']
+
+    #Key = "book" from raw data, value = clean title  
+    idxToCondition = dict()
+    idxToCondition["book"] = "condition"    #Hardcode in the column names for the csv when rendered in Excel
+
+    #Keep only conditions that match one of these (any case)
+    validConditions = ["new", "very good", "good", "fair", "poor"]
+
+    #Iterate over every title and store the dataframe indeces of titles with only alphabetic characters in it
+    for i in range(len(conditions)):                    #Title Loop
+        if(not isinstance(conditions[i], float)):       #Hardcoded error handler (NA is a float in a csv apparently...)
+            if(conditions[i].lower() in validConditions):
+                idxToCondition[book_nos[i]] = str(conditions[i].lower())
+
+    #Prepare pandas to write out to csv
+    conditionExport = pd.DataFrame.from_dict(idxToCondition, orient="index")
+
+    #Write out the book number, and the clean title to a csv so we can stitch it back together later 
+    conditionExport.to_csv(r'Clean_Data/conditions1.csv')
+
+
 # def db_connection():
 #     try:
 #         conn = db.connect(
@@ -76,11 +102,11 @@ def pubdate_clean(data):
 
 if __name__ == "__main__":
     #Read in raw data, inventory.csv
-    data = pd.read_csv('inventory_copy.csv', encoding = "ISO-8859-1")   
+    data = pd.read_csv('Cole_Processing_Data/inventory.csv', encoding = "ISO-8859-1")   
     df = pd.DataFrame(data, columns= ['book','title','author','binding','pubdate','publisher','isbn10','isbn13','condition','dustjacket','signed','edition','price','descr','synopsis','about_auth'])
     
 
     #book_clean(df)
     #title_clean_1(df)
-    pubdate_clean(df)
-
+    #pubdate_clean(df)
+    #condition_clean_1(df)
