@@ -1,5 +1,6 @@
 import pandas as pd
 import mariadb as db
+import math
 import re 
 
 
@@ -43,6 +44,7 @@ def title_clean_1(data):
     #Write out the book number, and the clean title to a csv so we can stitch it back together later 
     titleExport.to_csv(r'Clean_Data/titles1.csv')
 
+
 def binding_clean(data):
 
     No_covers = list(['Unknown Binding', 'NaN', 'Na', 'NA', 'NULL',"None"])
@@ -53,7 +55,43 @@ def binding_clean(data):
     df['binding'] = df['binding'].str.replace(r'\d','')
   
     df.to_csv('Clean_Data/binding.csv')
-    pass
+    
+
+def pubdate_clean(data):
+    pubdate = data['pubdate']
+    bookNum = data['book']
+
+    idxToPubDate = dict()
+    idxToPubDate["book"] = "PubDate"
+
+    for i in range(len(pubdate)):
+        #check if the publishing date is NaN and put in NULL if it is
+        if math.isnan(pubdate[i]):
+            idxToPubDate[bookNum[i]] = "NULL" #Hopefully DBeaver will read in "NULL" as actually NULL and not just a string
+        else:
+            idxToPubDate[bookNum[i]] = str(pubdate[i])
+
+    PubDateExport = pd.DataFrame.from_dict(idxToPubDate, orient="index")
+    PubDateExport.to_csv('Clean_Data/pubdate.csv')
+
+def price_clean(data):
+    price = data['price']
+    bookNum = data['book']
+
+    idxToPrice = dict()
+    idxToPrice['book'] = 'price'
+
+    for i in range(len(price)):
+        #The only values in this column that are floats are the NA values. Everything else is a valid price string
+        if type(price[i]) == float:
+            idxToPrice[bookNum[i]] = "NULL"
+        else:
+            idxToPrice[bookNum[i]] = str(price[i])[2:]
+
+    PriceExport = pd.DataFrame.from_dict(idxToPrice, orient="index")
+    PriceExport.to_csv('Clean_Data/price.csv')
+
+
 
 # def db_connection():
 #     try:
@@ -70,11 +108,13 @@ def binding_clean(data):
 
 if __name__ == "__main__":
     #Read in raw data, inventory.csv
-    data = pd.read_csv('Cole_Processing_Data/inventory.csv', encoding = "ISO-8859-1")   
+    data = pd.read_csv('inventory_copy.csv', encoding = "ISO-8859-1")   
     df = pd.DataFrame(data, columns= ['book','title','author','binding','pubdate','publisher','isbn10','isbn13','condition','dustjacket','signed','edition','price','descr','synopsis','about_auth'])
     
 
     #book_clean(df)
     #title_clean_1(df)
-    binding_clean(df)
+    #binding_clean(df)
+    #pubdate_clean(df)
+    #price_clean(df)
 
