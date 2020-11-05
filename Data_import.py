@@ -44,6 +44,19 @@ def title_clean_1(data):
     #Write out the book number, and the clean title to a csv so we can stitch it back together later 
     titleExport.to_csv(r'Clean_Data/titles1.csv')
 
+
+def binding_clean(data):
+
+    No_covers = list(['Unknown Binding', 'NaN', 'Na', 'NA', 'NULL',"None"])
+    df = data[['book','binding']]
+    #print(binding['binding'].str.contains('^([\w -]*[a-zA-Z])?$',regex = True))
+    df.loc[df['binding'].isin(No_covers), 'binding'] = ''
+    #no numbers
+    df['binding'] = df['binding'].str.replace(r'\d','')
+  
+    df.to_csv('Clean_Data/binding.csv')
+    
+
 def pubdate_clean(data):
     pubdate = data['pubdate']
     bookNum = data['book']
@@ -87,6 +100,25 @@ def condition_clean_1(data):
     conditionExport.to_csv(r'Clean_Data/conditions1.csv')
 
 
+def price_clean(data):
+    price = data['price']
+    bookNum = data['book']
+
+    idxToPrice = dict()
+    idxToPrice['book'] = 'price'
+
+    for i in range(len(price)):
+        #The only values in this column that are floats are the NA values. Everything else is a valid price string
+        if type(price[i]) == float:
+            idxToPrice[bookNum[i]] = "NULL"
+        else:
+            idxToPrice[bookNum[i]] = str(price[i])[2:]
+
+    PriceExport = pd.DataFrame.from_dict(idxToPrice, orient="index")
+    PriceExport.to_csv('Clean_Data/price.csv')
+
+
+
 # def db_connection():
 #     try:
 #         conn = db.connect(
@@ -108,5 +140,7 @@ if __name__ == "__main__":
 
     #book_clean(df)
     #title_clean_1(df)
+    #binding_clean(df)
     #pubdate_clean(df)
     #condition_clean_1(df)
+    #price_clean(df)
