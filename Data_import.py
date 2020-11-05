@@ -43,6 +43,18 @@ def title_clean_1(data):
     #Write out the book number, and the clean title to a csv so we can stitch it back together later 
     titleExport.to_csv(r'Clean_Data/titles1.csv')
 
+def binding_clean(data):
+
+    No_covers = list(['Unknown Binding', 'NaN', 'Na', 'NA', 'NULL',"None"])
+    df = data[['book','binding']]
+    #print(binding['binding'].str.contains('^([\w -]*[a-zA-Z])?$',regex = True))
+    df.loc[df['binding'].isin(No_covers), 'binding'] = ''
+    #no numbers
+    df['binding'] = df['binding'].str.replace(r'\d','')
+  
+    df.to_csv('Clean_Data/binding.csv')
+    pass
+
 # def db_connection():
 #     try:
 #         conn = db.connect(
@@ -63,5 +75,6 @@ if __name__ == "__main__":
     
 
     #book_clean(df)
-    title_clean_1(df)
+    #title_clean_1(df)
+    binding_clean(df)
 
