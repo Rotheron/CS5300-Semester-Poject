@@ -61,6 +61,24 @@ def pubdate_clean(data):
     PubDateExport = pd.DataFrame.from_dict(idxToPubDate, orient="index")
     PubDateExport.to_csv('Clean_Data/pubdate.csv')
 
+def price_clean(data):
+    price = data['price']
+    bookNum = data['book']
+
+    idxToPrice = dict()
+    idxToPrice['book'] = 'price'
+
+    for i in range(len(price)):
+        #The only values in this column that are floats are the NA values. Everything else is a valid price string
+        if type(price[i]) == float:
+            idxToPrice[bookNum[i]] = "NULL"
+        else:
+            idxToPrice[bookNum[i]] = str(price[i])[2:]
+
+    PriceExport = pd.DataFrame.from_dict(idxToPrice, orient="index")
+    PriceExport.to_csv('Clean_Data/price.csv')
+
+
 # def db_connection():
 #     try:
 #         conn = db.connect(
@@ -82,5 +100,6 @@ if __name__ == "__main__":
 
     #book_clean(df)
     #title_clean_1(df)
-    pubdate_clean(df)
+    #pubdate_clean(df)
+    price_clean(df)
 
