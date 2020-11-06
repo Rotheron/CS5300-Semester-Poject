@@ -32,6 +32,7 @@ def title_clean_1(data):
         for q in range(len(titles[i])):             #Character Loop
             if(titles[i][q] not in validChars):
                 validTitle = False
+                idxToTitle[book_nos[i]] = "NULL"
                 break
 
         #Title was clean
@@ -92,13 +93,18 @@ def condition_clean_1(data):
         if(not isinstance(conditions[i], float)):       #Hardcoded error handler (NA is a float in a csv apparently...)
             if(conditions[i].lower() in validConditions):
                 idxToCondition[book_nos[i]] = str(conditions[i].lower())
+            else:
+                idxToCondition[book_nos[i]] = "NULL"
+        else:
+            idxToCondition[book_nos[i]] = "NULL"
+
+        print(i)
 
     #Prepare pandas to write out to csv
     conditionExport = pd.DataFrame.from_dict(idxToCondition, orient="index")
 
     #Write out the book number, and the clean title to a csv so we can stitch it back together later 
     conditionExport.to_csv(r'Clean_Data/conditions1.csv')
-
 
 def price_clean(data):
     price = data['price']
@@ -117,6 +123,9 @@ def price_clean(data):
     PriceExport = pd.DataFrame.from_dict(idxToPrice, orient="index")
     PriceExport.to_csv('Clean_Data/price.csv')
 
+def authornote_clean_1(data):
+    pass
+    #I just did a quick run through in Excel for the first phase.
 
 
 # def db_connection():
@@ -142,5 +151,5 @@ if __name__ == "__main__":
     #title_clean_1(df)
     #binding_clean(df)
     #pubdate_clean(df)
-    #condition_clean_1(df)
+    condition_clean_1(df)
     #price_clean(df)
