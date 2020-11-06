@@ -106,6 +106,7 @@ def condition_clean_1(data):
     #Write out the book number, and the clean title to a csv so we can stitch it back together later 
     conditionExport.to_csv(r'Clean_Data/conditions1.csv')
 
+
 def price_clean(data):
     price = data['price']
     bookNum = data['book']
@@ -123,9 +124,10 @@ def price_clean(data):
     PriceExport = pd.DataFrame.from_dict(idxToPrice, orient="index")
     PriceExport.to_csv('Clean_Data/price.csv')
 
+
 def authornote_clean_1(data):
+    #I just did a quick run through in Excel for the first level of cleaning.
     pass
-    #I just did a quick run through in Excel for the first phase.
 
 
 # def db_connection():
