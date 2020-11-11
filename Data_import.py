@@ -50,7 +50,6 @@ def binding_clean(data):
 
     No_covers = list(['Unknown Binding', 'NaN', 'Na', 'NA', 'NULL',"None"])
     df = data[['book','binding']]
-    #print(binding['binding'].str.contains('^([\w -]*[a-zA-Z])?$',regex = True))
     df.loc[df['binding'].isin(No_covers), 'binding'] = ''
     #no numbers
     df['binding'] = df['binding'].str.replace(r'\d','')
@@ -150,6 +149,25 @@ def isbn10_clean_1(data):
     PriceExport = pd.DataFrame.from_dict(idxToIsbn10, orient="index")
     PriceExport.to_csv('Clean_Data/isbn10.csv')
 
+#Signed
+def signed_clean(data):
+    signed = data['signed']
+    bookNum = data['book']
+
+    idxToSigned = dict()
+    idxToSigned['book'] = 'signed'
+
+    for i in range(len(signed)):
+        if type(signed[i]) == float:
+             idxToSigned[bookNum[i]] = "NULL"
+        elif (signed[i][:1] == 'n' or signed[i][:1] == 'N') and signed[i] != "NULL":
+            idxToSigned[bookNum[i]] = "NULL"
+        else:
+            idxToSigned[bookNum[i]] = signed[i]
+
+    SignedExport = pd.DataFrame.from_dict(idxToSigned, orient="index")
+    SignedExport.to_csv('Clean_Data/signed.csv')
+
 #Jacket_Condition
 def jacket_clean_1(data):
     #Read in "book" and the raw "condition" column.
@@ -184,6 +202,19 @@ def jacket_clean_1(data):
     conditionExport.to_csv(r'Clean_Data/jacketConditions1.csv')
 
 
+def edition_clean(data):
+    
+    df = data[['book','edition']]
+    df['edition'] = df['edition'].str.replace(r'1st','First')
+    df['edition'] = df['edition'].str.replace(r'1','First')
+    df['edition'] = df['edition'].str.replace(r'2nd','Second')
+    df['edition'] = df['edition'].str.replace(r'Printing','Edition')
+    df['edition'] = df['edition'].str.replace(r'.*Unknown.*','')
+  
+    df.to_csv('Clean_Data/edition.csv')
+    
+
+
 # def db_connection():
 #     try:
 #         conn = db.connect(
@@ -210,4 +241,6 @@ if __name__ == "__main__":
     #condition_clean_1(df)
     #price_clean(df)
     #isbn10_clean_1(df)  # Code adapted from https://www.geeksforgeeks.org/program-check-isbn/isbn10_clean_1(df)
+    #signed_clean(df)
     #jacket_clean_1(df)
+    #edition_clean(df)
