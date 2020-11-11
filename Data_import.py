@@ -50,7 +50,6 @@ def binding_clean(data):
 
     No_covers = list(['Unknown Binding', 'NaN', 'Na', 'NA', 'NULL',"None"])
     df = data[['book','binding']]
-    #print(binding['binding'].str.contains('^([\w -]*[a-zA-Z])?$',regex = True))
     df.loc[df['binding'].isin(No_covers), 'binding'] = ''
     #no numbers
     df['binding'] = df['binding'].str.replace(r'\d','')
@@ -130,6 +129,19 @@ def authornote_clean_1(data):
     pass
 
 
+def edition_clean(data):
+    
+    df = data[['book','edition']]
+    df['edition'] = df['edition'].str.replace(r'1st','First')
+    df['edition'] = df['edition'].str.replace(r'1','First')
+    df['edition'] = df['edition'].str.replace(r'2nd','Second')
+    df['edition'] = df['edition'].str.replace(r'Printing','Edition')
+    df['edition'] = df['edition'].str.replace(r'.*Unknown.*','')
+  
+    df.to_csv('Clean_Data/edition.csv')
+    
+
+
 # def db_connection():
 #     try:
 #         conn = db.connect(
@@ -153,5 +165,7 @@ if __name__ == "__main__":
     #title_clean_1(df)
     #binding_clean(df)
     #pubdate_clean(df)
-    condition_clean_1(df)
+    #condition_clean_1(df)
     #price_clean(df)
+    edition_clean(df)
+    
