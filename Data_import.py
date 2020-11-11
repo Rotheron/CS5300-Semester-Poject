@@ -150,6 +150,38 @@ def isbn10_clean_1(data):
     PriceExport = pd.DataFrame.from_dict(idxToIsbn10, orient="index")
     PriceExport.to_csv('Clean_Data/isbn10.csv')
 
+#Jacket_Condition
+def jacket_clean_1(data):
+    #Read in "book" and the raw "condition" column.
+    book_nos = data['book']
+    conditions = data['dustjacket']
+
+    #Key = "book" from raw data, value = clean title
+    idxToCondition = dict()
+    # Hardcode in the column names for the csv when rendered in Excel
+    idxToCondition["book"] = "JacketCondition"
+
+    #Keep only conditions that match one of these (any case)
+    validConditions = ["new", "very good", "good", "fair", "poor"]
+
+    #Iterate over every title and store the dataframe indeces of titles with only alphabetic characters in it
+    for i in range(len(conditions)):  # Title Loop
+        # Hardcoded error handler (NA is a float in a csv apparently...)
+        if(not isinstance(conditions[i], float)):
+            if(conditions[i].lower() in validConditions):
+                idxToCondition[book_nos[i]] = str(conditions[i].lower())
+            else:
+                idxToCondition[book_nos[i]] = "NULL"
+        else:
+            idxToCondition[book_nos[i]] = "NULL"
+
+        print(i)
+
+    #Prepare pandas to write out to csv
+    conditionExport = pd.DataFrame.from_dict(idxToCondition, orient="index")
+
+    #Write out the book number, and the clean title to a csv so we can stitch it back together later
+    conditionExport.to_csv(r'Clean_Data/jacketConditions1.csv')
 
 
 # def db_connection():
@@ -177,4 +209,5 @@ if __name__ == "__main__":
     #pubdate_clean(df)
     #condition_clean_1(df)
     #price_clean(df)
-    isbn10_clean_1(df)  # Code adapted from https://www.geeksforgeeks.org/program-check-isbn/isbn10_clean_1(df)
+    #isbn10_clean_1(df)  # Code adapted from https://www.geeksforgeeks.org/program-check-isbn/isbn10_clean_1(df)
+    #jacket_clean_1(df)
