@@ -256,6 +256,12 @@ def language_parse(data):
     
     df.to_csv('Clean_Data/language.csv')
 
+def publisher_clean(data):
+    df = data[['book','publisher']]
+    df['publisher'] = df['publisher'].str.replace(r'.*[dD][oO][Vv][eE][Rr].*','Dover')
+    df['publisher'] = df['publisher'].str.replace(r'.*[Aa][cC][eE].*','Ace')
+    df['publisher'] = df['publisher'].str.replace(r'.*[bB][aA][lL][Ll][aA][nN][a]?[Tt][iI][nN][Ee].*','Ballantine')
+    df.to_csv('Clean_Data/publisher.csv', index = False)
 
 # def db_connection():
 #     try:
@@ -288,3 +294,4 @@ if __name__ == "__main__":
     #edition_clean(df)
     #author_clean_1(df)
     #language_parse(df)
+    publisher_clean(df)
