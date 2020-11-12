@@ -48,14 +48,25 @@ def title_clean_1(data):
 #Binding_Type
 def binding_clean(data):
 
-    No_covers = list(['Unknown Binding', 'NaN', 'Na', 'NA', 'NULL',"None"])
+    No_covers = list(['Unknown Binding', 'NaN', 'Na', 'NA', 'NULL',"None",'Reliure inconnue','Contacter le vendeur'])
     df = data[['book','binding']]
    
     df.loc[df['binding'].isin(No_covers), 'binding'] = ''
    
-    #no numbers
+    #Parsing out numbers
     df['binding'] = df['binding'].str.replace(r'\d','')
-  
+
+    Paperback = list(['Broché', 'Taschenbuch', 'Encuadernaciï¿½n de tapa blanda', 'brochï¿½', 'Brochï¿½', 'Broché.',
+                        'aschenbuch', 'Broschiert', 'brossura', 'Brosurra','Livre de poche',
+                        'Encuadernación de tapa blanda','Rustica','Rústica','Couverture souple', 'Format Poche'])
+
+    Hardback = list(['Gebundene Ausgabe','gebundene Ausgabe.', 'gebundene Ausgabe Leinen',
+                     'Cartonné','Couverture rigide','Indbundet pænt halvlæder'])
+    Hardcover = list(['hardcover','hard cover','HardCover','hardCover', 'Hard Cover', 'Hard cover'])
+    df.loc[df['binding'].isin(Paperback), 'binding'] = 'Paperback'
+    df.loc[df['binding'].isin(Hardback), 'binding'] = 'Hardback'
+    df.loc[df['binding'].isin(Hardcover), 'binding'] = 'Hardcover'
+
     df.to_csv('Clean_Data/binding.csv')
     
 #Pub_Date
@@ -224,6 +235,27 @@ def author_clean_1(data):
 
     df.to_csv('Clean_Data/bad_authors1.csv')
     
+def language_parse(data):
+    
+    German  = list(['aschenbuch', 'Broschiert', 'Gebundene Ausgabe', 'gebundene Ausgabe.', 
+                    'gebundene Ausgabe Leinen',"None"])
+    French  = list(['Contacter le vendeur', 'Broché', 'Broché.', 'brochï¿½', 'Brochï¿½', 'Cartonné','Couverture rigide',
+                'Couverture souple','Format Poche','Livre de poche','Reliure inconnue'])
+    Italian = list(['brossura','Brosurra','Rustica','Rústica'])
+    Spanish = list(['Encuadernación de tapa blanda'])
+    Danish  = list(['Indbundet pænt halvlæder'])
+    bind_data = data[['book', 'binding']]
+
+    df = data[['book']]
+    df['language'] = 'English'
+    df.loc[bind_data['binding'].isin(German), 'language'] = 'German'
+    df.loc[bind_data['binding'].isin(French), 'language'] = 'French'
+    df.loc[bind_data['binding'].isin(Italian), 'language'] = 'Italian'
+    df.loc[bind_data['binding'].isin(Spanish), 'language'] = 'Spanish'
+    df.loc[bind_data['binding'].isin(Danish), 'language'] = 'Danish'
+    
+    df.to_csv('Clean_Data/language.csv')
+
 
 # def db_connection():
 #     try:
@@ -254,4 +286,5 @@ if __name__ == "__main__":
     #signed_clean(df)
     #jacket_clean_1(df)
     #edition_clean(df)
-    author_clean_1(df)
+    #author_clean_1(df)
+    #language_parse(df)
