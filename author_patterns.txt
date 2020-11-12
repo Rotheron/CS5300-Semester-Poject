@@ -1,0 +1,5 @@
+[a-zA-Z]*[, ]+[a-zA-Z]*[ ]?[a-zA-Z]*
+Carter, Lin
+Edgar Rice Burroughs
+Charles Dickens
+Derleth, August William

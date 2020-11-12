@@ -50,7 +50,9 @@ def binding_clean(data):
 
     No_covers = list(['Unknown Binding', 'NaN', 'Na', 'NA', 'NULL',"None"])
     df = data[['book','binding']]
+   
     df.loc[df['binding'].isin(No_covers), 'binding'] = ''
+   
     #no numbers
     df['binding'] = df['binding'].str.replace(r'\d','')
   
@@ -201,7 +203,7 @@ def jacket_clean_1(data):
     #Write out the book number, and the clean title to a csv so we can stitch it back together later
     conditionExport.to_csv(r'Clean_Data/jacketConditions1.csv')
 
-
+#Edition
 def edition_clean(data):
     
     df = data[['book','edition']]
@@ -212,8 +214,16 @@ def edition_clean(data):
     df['edition'] = df['edition'].str.replace(r'.*Unknown.*','')
   
     df.to_csv('Clean_Data/edition.csv')
-    
 
+#Author Name (This keeps all the bad authors)
+def author_clean_1(data):
+    df = data[['book', 'author']]
+    #df['b'] = df.author.str.match(r'[a-zA-Z]*[, ]+[a-zA-Z]*[ ]?[a-zA-Z]*').astype(str)
+
+    df['author'] = df.author.str.replace(r'^[a-zA-Z]*[, ]+[a-zA-Z]*[ ]?[a-zA-Z]*$', "").astype(str)
+
+    df.to_csv('Clean_Data/bad_authors1.csv')
+    
 
 # def db_connection():
 #     try:
@@ -244,3 +254,4 @@ if __name__ == "__main__":
     #signed_clean(df)
     #jacket_clean_1(df)
     #edition_clean(df)
+    author_clean_1(df)
