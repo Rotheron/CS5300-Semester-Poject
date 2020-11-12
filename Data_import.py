@@ -8,7 +8,7 @@ def book_clean(data):
     # preprocess and clean the data for the "book" column in the data frame (df)
     book = data['book']
     #book = pd.DataFrame([['Sacramento', 'California'], ['Miami', 'Florida']], columns=['City', 'State'])
-    book.to_csv('Clean_Data/book.csv')
+    book.to_csv('Clean_Data/book.csv', index=False)
 
 #Title
 def title_clean_1(data):
@@ -67,7 +67,7 @@ def binding_clean(data):
     df.loc[df['binding'].isin(Hardback), 'binding'] = 'Hardback'
     df.loc[df['binding'].isin(Hardcover), 'binding'] = 'Hardcover'
 
-    df.to_csv('Clean_Data/binding.csv')
+    df.to_csv('Clean_Data/binding.csv', index=False)
     
 #Pub_Date
 def pubdate_clean(data):
@@ -224,7 +224,7 @@ def edition_clean(data):
     df['edition'] = df['edition'].str.replace(r'Printing','Edition')
     df['edition'] = df['edition'].str.replace(r'.*Unknown.*','')
   
-    df.to_csv('Clean_Data/edition.csv')
+    df.to_csv('Clean_Data/edition.csv', index=False)
 
 #Author Name (This keeps all the bad authors)
 def author_clean_1(data):
@@ -254,7 +254,7 @@ def language_parse(data):
     df.loc[bind_data['binding'].isin(Spanish), 'language'] = 'Spanish'
     df.loc[bind_data['binding'].isin(Danish), 'language'] = 'Danish'
     
-    df.to_csv('Clean_Data/language.csv')
+    df.to_csv('Clean_Data/language.csv', index=False)
 
 
 def synopsis_clean(data):
@@ -278,6 +278,18 @@ def synopsis_clean(data):
 
     SynopsisExport = pd.DataFrame.from_dict(idxToSynopsis, orient="index")
     SynopsisExport.to_csv('Clean_Data/synopsis.csv')
+
+def book_merge(title_csv, condition_csv, price_csv, jacket_condition_csv):
+    title_df = pd.read_csv(title_csv)
+    condition_df = pd.read_csv(condition_csv)
+    price_df = pd.read_csv(price_csv)
+    jacket_condition_df = pd.read_csv(jacket_condition_csv)
+
+    merge1 = title_df.merge(condition_df, on = 'book')
+    merge2 = merge1.merge(price_df, on = 'book')
+    merge3 = merge2.merge(jacket_condition_df, on = 'book')
+
+    merge3.to_csv('Table_Data/book_table.csv', index=False)
 
 # def db_connection():
 #     try:
@@ -311,3 +323,4 @@ if __name__ == "__main__":
     #author_clean_1(df)
     #synopsis_clean(df)
     #language_parse(df)
+    book_merge('Clean_Data/titles1.csv', 'Clean_Data/conditions1.csv', 'Clean_Data/price.csv', 'Clean_Data/jacketConditions1.csv')
