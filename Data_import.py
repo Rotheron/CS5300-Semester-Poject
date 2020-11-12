@@ -291,6 +291,21 @@ def book_merge(title_csv, condition_csv, price_csv, jacket_condition_csv):
 
     merge3.to_csv('Table_Data/book_table.csv', index=False)
 
+def book_info_merge(pubDate_csv, edition_csv, synopsis_csv, signed_csv, ISBN_csv):
+    pubDate_df = pd.read_csv(pubDate_csv)
+    edition_df = pd.read_csv(edition_csv)
+    synopsis_df = pd.read_csv(synopsis_csv)
+    signed_df = pd.read_csv(signed_csv)
+    ISBN_df = pd.read_csv(ISBN_csv)
+
+    merge1 = pubDate_df.merge(edition_df, on = 'book')
+    merge2 = merge1.merge(synopsis_df, on = 'book')
+    merge3 = merge2.merge(signed_df, on = 'book')
+    merge4 = merge3.merge(ISBN_df, on = 'book')
+
+    merge4 = merge4.drop(columns='book')
+    merge4.to_csv('Table_Data/book_info_table.csv')
+
 # def db_connection():
 #     try:
 #         conn = db.connect(
@@ -323,4 +338,5 @@ if __name__ == "__main__":
     #author_clean_1(df)
     #synopsis_clean(df)
     #language_parse(df)
-    book_merge('Clean_Data/titles1.csv', 'Clean_Data/conditions1.csv', 'Clean_Data/price.csv', 'Clean_Data/jacketConditions1.csv')
+    #book_merge('Clean_Data/titles1.csv', 'Clean_Data/conditions1.csv', 'Clean_Data/price.csv', 'Clean_Data/jacketConditions1.csv')
+    book_info_merge('Clean_Data/pubdate.csv', 'Clean_Data/edition.csv', 'Clean_Data/synopsis.csv', 'Clean_Data/signed.csv', 'Clean_Data/isbn10.csv')
