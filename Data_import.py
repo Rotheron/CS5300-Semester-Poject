@@ -225,6 +225,28 @@ def author_clean_1(data):
     df.to_csv('Clean_Data/bad_authors1.csv')
     
 
+def synopsis_clean(data):
+    synopsis = data['synopsis']
+    bookNum = data['book']
+
+    idxToSynopsis = dict()
+    idxToSynopsis['book'] = 'synopsis'
+
+    for i in range(len(synopsis)):
+        if type(synopsis[i]) == float:
+            idxToSynopsis[bookNum[i]] = "NULL"
+        else:
+            if 'ï¿½' in synopsis[i]:
+                synopsis[i] = synopsis[i].replace('ï¿½', '')
+            if '&&' in synopsis[i]:
+                synopsis[i] = synopsis[i].replace('&&', '')
+            if 'LDIV' in synopsis[i]:
+                synopsis[i] = synopsis[i].replace('LDIV', '')
+            idxToSynopsis[bookNum[i]] = synopsis[i]
+
+    SynopsisExport = pd.DataFrame.from_dict(idxToSynopsis, orient="index")
+    SynopsisExport.to_csv('Clean_Data/synopsis.csv')
+
 # def db_connection():
 #     try:
 #         conn = db.connect(
@@ -254,4 +276,6 @@ if __name__ == "__main__":
     #signed_clean(df)
     #jacket_clean_1(df)
     #edition_clean(df)
-    author_clean_1(df)
+    #author_clean_1(df)
+
+    synopsis_clean(df)
