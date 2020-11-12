@@ -234,7 +234,8 @@ def author_clean_1(data):
     df['author'] = df.author.str.replace(r'^[a-zA-Z]*[, ]+[a-zA-Z]*[ ]?[a-zA-Z]*$', "").astype(str)
 
     df.to_csv('Clean_Data/bad_authors1.csv')
-    
+
+
 def language_parse(data):
     
     German  = list(['aschenbuch', 'Broschiert', 'Gebundene Ausgabe', 'gebundene Ausgabe.', 
@@ -279,6 +280,7 @@ def synopsis_clean(data):
     SynopsisExport = pd.DataFrame.from_dict(idxToSynopsis, orient="index")
     SynopsisExport.to_csv('Clean_Data/synopsis.csv')
 
+
 def book_merge(title_csv, condition_csv, price_csv, jacket_condition_csv):
     title_df = pd.read_csv(title_csv)
     condition_df = pd.read_csv(condition_csv)
@@ -289,6 +291,12 @@ def book_merge(title_csv, condition_csv, price_csv, jacket_condition_csv):
     merge2 = merge1.merge(price_df, on = 'book')
     merge3 = merge2.merge(jacket_condition_df, on = 'book')
 
+    #Add Book_Info_ID to each book (1-1 match between Book entity and Book_Info entity. [0,12041])
+    Book_Info_ID_List = list()
+    for i in range(len(merge3)):
+        Book_Info_ID_List.append(i)
+
+    merge3["Book_Info_ID"] = Book_Info_ID_List
     merge3.to_csv('Table_Data/book_table.csv', index=False)
 
 def book_info_merge(pubDate_csv, edition_csv, synopsis_csv, signed_csv, ISBN_csv):
@@ -338,5 +346,5 @@ if __name__ == "__main__":
     #author_clean_1(df)
     #synopsis_clean(df)
     #language_parse(df)
-    #book_merge('Clean_Data/titles1.csv', 'Clean_Data/conditions1.csv', 'Clean_Data/price.csv', 'Clean_Data/jacketConditions1.csv')
-    book_info_merge('Clean_Data/pubdate.csv', 'Clean_Data/edition.csv', 'Clean_Data/synopsis.csv', 'Clean_Data/signed.csv', 'Clean_Data/isbn10.csv')
+    book_merge('Clean_Data/titles1.csv', 'Clean_Data/conditions1.csv', 'Clean_Data/price.csv', 'Clean_Data/jacketConditions1.csv')
+    #book_info_merge('Clean_Data/pubdate.csv', 'Clean_Data/edition.csv', 'Clean_Data/synopsis.csv', 'Clean_Data/signed.csv', 'Clean_Data/isbn10.csv')
