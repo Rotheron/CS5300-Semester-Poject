@@ -337,7 +337,25 @@ def linking_table_creator():
         df[val_to_replace] = df[val_to_replace].str.replace(value,str(index))
     df.to_csv(lookup_table,index=False)
 
+def publisher_linker():
+    pub_csv = "Clean_Data/publisher.csv"
+    book_table = "Table_Data/book_table.csv"
+    pub_df = pd.read_csv(pub_csv)
+    book_df = pd.read_csv(book_table)
+    val_to_replace = 'publisher'
+    #data = pd.read_csv(linking_file, encoding = "ISO-8859-1")
+    df = pd.DataFrame(pub_df, columns= ['book',val_to_replace])
 
+    Unique = df[val_to_replace].unique()
+    #Unique_df = pd.DataFrame(Unique, columns = [val_to_replace])
+
+    for index,value in enumerate(Unique):
+        df[val_to_replace] = df[val_to_replace].replace(str(value),str(index))
+    
+
+    book_df = book_df.merge(df, on = 'book')
+    # book_df = book_df.drop(columns='publisher')
+    book_df.to_csv("Table_Data/book_table_final.csv", index = False)
 
 
 if __name__ == "__main__":
@@ -361,6 +379,6 @@ if __name__ == "__main__":
     #language_parse(df)
     #publisher_clean(df)
     #book_merge('Clean_Data/titles1.csv', 'Clean_Data/conditions1.csv', 'Clean_Data/price.csv', 'Clean_Data/jacketConditions1.csv')
-    linking_table_creator()
+    #linking_table_creator()
     #book_info_merge('Clean_Data/pubdate.csv', 'Clean_Data/edition.csv', 'Clean_Data/synopsis.csv', 'Clean_Data/signed.csv', 'Clean_Data/isbn10.csv')
-
+    publisher_linker()
