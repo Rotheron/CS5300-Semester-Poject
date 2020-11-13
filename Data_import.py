@@ -8,7 +8,7 @@ def book_clean(data):
     # preprocess and clean the data for the "book" column in the data frame (df)
     book = data['book']
     #book = pd.DataFrame([['Sacramento', 'California'], ['Miami', 'Florida']], columns=['City', 'State'])
-    book.to_csv('Clean_Data/book.csv')
+    book.to_csv('Clean_Data/book.csv', index=False)
 
 #Title
 def title_clean_1(data):
@@ -67,7 +67,7 @@ def binding_clean(data):
     df.loc[df['binding'].isin(Hardback), 'binding'] = 'Hardback'
     df.loc[df['binding'].isin(Hardcover), 'binding'] = 'Hardcover'
 
-    df.to_csv('Clean_Data/binding.csv')
+    df.to_csv('Clean_Data/binding.csv', index=False)
     
 #Pub_Date
 def pubdate_clean(data):
@@ -224,7 +224,7 @@ def edition_clean(data):
     df['edition'] = df['edition'].str.replace(r'Printing','Edition')
     df['edition'] = df['edition'].str.replace(r'.*Unknown.*','')
   
-    df.to_csv('Clean_Data/edition.csv')
+    df.to_csv('Clean_Data/edition.csv', index=False)
 
 #Author Name (This keeps all the bad authors)
 def author_clean_1(data):
@@ -234,7 +234,8 @@ def author_clean_1(data):
     df['author'] = df.author.str.replace(r'^[a-zA-Z]*[, ]+[a-zA-Z]*[ ]?[a-zA-Z]*$', "").astype(str)
 
     df.to_csv('Clean_Data/bad_authors1.csv')
-    
+
+
 def language_parse(data):
     
     German  = list(['aschenbuch', 'Broschiert', 'Gebundene Ausgabe', 'gebundene Ausgabe.', 
@@ -242,10 +243,9 @@ def language_parse(data):
     French  = list(['Contacter le vendeur', 'Broché', 'Broché.', 'brochï¿½', 'Brochï¿½', 'Cartonné','Couverture rigide',
                 'Couverture souple','Format Poche','Livre de poche','Reliure inconnue'])
     Italian = list(['brossura','Brosurra','Rustica','Rústica'])
-    Spanish = list(['Encuadernación de tapa blanda'])
-    Danish  = list(['Indbundet pænt halvlæder'])
+    Spanish = list(['Encuadernación de tapa blanda','Encuadernaci�n de tapa blanda','Encuadernaciï¿½n de tapa blanda'])
+    Danish  = list(['Indbundet pænt halvlæder','Indbundet p�nt halvl�der','Indbundet pï¿½nt halvlï¿½der'])
     bind_data = data[['book', 'binding']]
-
     df = data[['book']]
     df['language'] = 'English'
     df.loc[bind_data['binding'].isin(German), 'language'] = 'German'
@@ -254,7 +254,8 @@ def language_parse(data):
     df.loc[bind_data['binding'].isin(Spanish), 'language'] = 'Spanish'
     df.loc[bind_data['binding'].isin(Danish), 'language'] = 'Danish'
     
-    df.to_csv('Clean_Data/language.csv')
+    df.to_csv('Clean_Data/language.csv', index=False)
+
 
 def publisher_clean(data):
     df = data[['book','publisher']]
@@ -263,18 +264,81 @@ def publisher_clean(data):
     df['publisher'] = df['publisher'].str.replace(r'.*[bB][aA][lL][Ll][aA][nN][a]?[Tt][iI][nN][Ee].*','Ballantine')
     df.to_csv('Clean_Data/publisher.csv', index = False)
 
-# def db_connection():
-#     try:
-#         conn = db.connect(
-#             user="db_user",
-#             password="db_user_passwd",
-#             host="192.0.2.1",
-#             port=3306,
-#             database="employees"
-#     )
-#     except db.Error as e:
-#         print(f"Error connecting to MariaDB Platform: {e}")
-#         sys.exit(1)
+def synopsis_clean(data):
+    synopsis = data['synopsis']
+    bookNum = data['book']
+
+    idxToSynopsis = dict()
+    idxToSynopsis['book'] = 'synopsis'
+
+    for i in range(len(synopsis)):
+        if type(synopsis[i]) == float:
+            idxToSynopsis[bookNum[i]] = "NULL"
+        else:
+            if 'ï¿½' in synopsis[i]:
+                synopsis[i] = synopsis[i].replace('ï¿½', '')
+            if '&&' in synopsis[i]:
+                synopsis[i] = synopsis[i].replace('&&', '')
+            if 'LDIV' in synopsis[i]:
+                synopsis[i] = synopsis[i].replace('LDIV', '')
+            idxToSynopsis[bookNum[i]] = synopsis[i]
+
+    SynopsisExport = pd.DataFrame.from_dict(idxToSynopsis, orient="index")
+    SynopsisExport.to_csv('Clean_Data/synopsis.csv')
+
+
+def book_merge(title_csv, condition_csv, price_csv, jacket_condition_csv):
+    title_df = pd.read_csv(title_csv)
+    condition_df = pd.read_csv(condition_csv)
+    price_df = pd.read_csv(price_csv)
+    jacket_condition_df = pd.read_csv(jacket_condition_csv)
+
+    merge1 = title_df.merge(condition_df, on = 'book')
+    merge2 = merge1.merge(price_df, on = 'book')
+    merge3 = merge2.merge(jacket_condition_df, on = 'book')
+
+    #Add Book_Info_ID to each book (1-1 match between Book entity and Book_Info entity. [0,12041])
+    Book_Info_ID_List = list()
+    for i in range(len(merge3)):
+        Book_Info_ID_List.append(i)
+
+    merge3["Book_Info_ID"] = Book_Info_ID_List
+    merge3.to_csv('Table_Data/book_table.csv', index=False)
+
+def book_info_merge(pubDate_csv, edition_csv, synopsis_csv, signed_csv, ISBN_csv):
+    pubDate_df = pd.read_csv(pubDate_csv)
+    edition_df = pd.read_csv(edition_csv)
+    synopsis_df = pd.read_csv(synopsis_csv)
+    signed_df = pd.read_csv(signed_csv)
+    ISBN_df = pd.read_csv(ISBN_csv)
+
+    merge1 = pubDate_df.merge(edition_df, on = 'book')
+    merge2 = merge1.merge(synopsis_df, on = 'book')
+    merge3 = merge2.merge(signed_df, on = 'book')
+    merge4 = merge3.merge(ISBN_df, on = 'book')
+
+    merge4 = merge4.drop(columns='book')
+    merge4.to_csv('Table_Data/book_info_table.csv')
+
+def linking_table_creator():
+    linking_file = "Clean_Data/language.csv" #Set the file you want to grab values from
+    table = 'Table_Data/language.csv'
+    lookup_table = 'Table_Data/book_languages.csv'
+    val_to_replace = 'language'
+    data = pd.read_csv(linking_file, encoding = "ISO-8859-1")
+    df = pd.DataFrame(data, columns= ['book',val_to_replace])
+
+    Unique = df[val_to_replace].unique()
+    Unique_df = pd.DataFrame(Unique, columns = [val_to_replace])
+    Unique_df.to_csv(table)
+
+    #Replace values in other csv with corresponding ID
+    for index,value in enumerate(Unique):
+        df[val_to_replace] = df[val_to_replace].str.replace(value,str(index))
+    df.to_csv(lookup_table,index=False)
+
+
+
 
 if __name__ == "__main__":
     #Read in raw data, inventory.csv
@@ -293,5 +357,10 @@ if __name__ == "__main__":
     #jacket_clean_1(df)
     #edition_clean(df)
     #author_clean_1(df)
+    #synopsis_clean(df)
     #language_parse(df)
-    publisher_clean(df)
+    #publisher_clean(df)
+    #book_merge('Clean_Data/titles1.csv', 'Clean_Data/conditions1.csv', 'Clean_Data/price.csv', 'Clean_Data/jacketConditions1.csv')
+    linking_table_creator()
+    #book_info_merge('Clean_Data/pubdate.csv', 'Clean_Data/edition.csv', 'Clean_Data/synopsis.csv', 'Clean_Data/signed.csv', 'Clean_Data/isbn10.csv')
+
