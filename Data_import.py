@@ -320,6 +320,18 @@ def book_info_merge(pubDate_csv, edition_csv, synopsis_csv, signed_csv, ISBN_csv
     merge4 = merge4.drop(columns='book')
     merge4.to_csv('Table_Data/book_info_table.csv')
 
+def author_info_merge(about_auth_csv, authors_csv, author_table_csv):
+    about_df = pd.read_csv(about_auth_csv)
+    authors_df = pd.read_csv(authors_csv)
+    author_table_df = pd.read_csv(author_table_csv)
+
+    merge1 = about_df.merge(authors_df, on = 'book')
+    merge2 = merge1.merge(author_table_df, on = 'author')
+
+    merge2 = merge1.drop(columns='book')
+    merge2.to_csv('Table_Data/author_final.csv')
+    
+
 def linking_table_creator():
     linking_file = "Clean_Data/language.csv" #Set the file you want to grab values from
     table = 'Table_Data/language.csv'
@@ -418,3 +430,4 @@ if __name__ == "__main__":
     #linking_table_creator_bind_book()
     #book_info_merge('Clean_Data/pubdate.csv', 'Clean_Data/edition.csv', 'Clean_Data/synopsis.csv', 'Clean_Data/signed.csv', 'Clean_Data/isbn10.csv')
     #publisher_linker()
+    author_info_merge('Clean_Data/aboutauth1.csv', 'Clean_Data/authors1.csv', 'Table_Data/authors.csv')
