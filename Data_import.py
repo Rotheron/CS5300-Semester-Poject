@@ -337,8 +337,42 @@ def linking_table_creator():
         df[val_to_replace] = df[val_to_replace].str.replace(value,str(index))
     df.to_csv(lookup_table,index=False)
 
+    
 
+def linking_table_creator_author_book():
+    linking_file = "Clean_Data/authors1.csv" #Set the file you want to grab values from
+    table = 'Table_Data/authors.csv'
+    lookup_table = 'Table_Data/author_book.csv'
+    val_to_replace = 'author'
+    data = pd.read_csv(linking_file, encoding = "ISO-8859-1")
+    df = pd.DataFrame(data, columns= ['book',val_to_replace])
 
+    Unique = df[val_to_replace].unique()
+    Unique_df = pd.DataFrame(Unique, columns = [val_to_replace])
+    Unique_df.to_csv(table)
+
+    #Replace values in other csv with corresponding ID
+    for index,value in enumerate(Unique):
+        df[val_to_replace] = df[val_to_replace].str.replace(value,str(index))
+    df[val_to_replace] = df[val_to_replace].str.extract(r'(\d+)', expand=False)
+    df.to_csv(lookup_table,index=False)
+
+def linking_table_creator_bind_book():
+    linking_file = "Clean_Data/binding.csv" #Set the file you want to grab values from
+    table = 'Table_Data/binding.csv'
+    lookup_table = 'Table_Data/binding_info_book.csv'
+    val_to_replace = 'binding'
+    data = pd.read_csv(linking_file, encoding = "ISO-8859-1")
+    df = pd.DataFrame(data, columns= ['book',val_to_replace])
+
+    Unique = df[val_to_replace].unique()
+    Unique_df = pd.DataFrame(Unique, columns = [val_to_replace])
+    Unique_df.to_csv(table)
+    #Replace values in other csv with corresponding ID
+    for index,value in enumerate(Unique):
+        df[val_to_replace] = df[val_to_replace].str.replace(str(value),str(index))
+    df[val_to_replace] = df[val_to_replace].str.extract(r'(\d+)', expand=False)
+    df.to_csv(lookup_table,index=False)
 
 if __name__ == "__main__":
     #Read in raw data, inventory.csv
@@ -361,6 +395,6 @@ if __name__ == "__main__":
     #language_parse(df)
     #publisher_clean(df)
     #book_merge('Clean_Data/titles1.csv', 'Clean_Data/conditions1.csv', 'Clean_Data/price.csv', 'Clean_Data/jacketConditions1.csv')
-    linking_table_creator()
+    linking_table_creator_bind_book()
     #book_info_merge('Clean_Data/pubdate.csv', 'Clean_Data/edition.csv', 'Clean_Data/synopsis.csv', 'Clean_Data/signed.csv', 'Clean_Data/isbn10.csv')
 
