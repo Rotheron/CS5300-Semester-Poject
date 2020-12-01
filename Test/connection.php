@@ -4,9 +4,9 @@
 <?php
 
 $hostname = "cs-class-db.srv.mst.edu";
-$username = "lff8gw";
-$password = "BigGamer7!!";
-$db = "lff8gw";
+$username = "MST Username";
+$password = "userPass";
+$db = "yourDB";
 
 $dbconnect=mysqli_connect($hostname,$username,$password,$db);
 
