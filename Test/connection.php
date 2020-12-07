@@ -1,5 +1,8 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
+  <head>
+    <link rel="stylesheet" href="../CSS/connection.css">
+  </head>
   <body>
     <?php
       $hostname = "cs-class-db.srv.mst.edu";
@@ -21,11 +24,12 @@
       <td>Title</td>
       <td>Author</td>
       <td>Price</td>
+      <td>ID</td>
     </tr>
  
     <?php
 
-      $all_book_query ="SELECT Book.Title, Book.Price, AUTHOR.Name FROM BOOKS as Book
+      $all_book_query ="SELECT Book.Title, AUTHOR.Name, Book.Price, Book.Book_ID FROM BOOKS as Book
                           NATURAL JOIN AUTHOR_BOOK
                           JOIN AUTHOR on AUTHOR.AUTHOR_ID = AUTHOR_BOOK.Author_ID
                           WHERE Book.Title IS NOT NULL
@@ -38,8 +42,9 @@
         echo
         "<tr>
           <td>{$row[0]}</td>
-          <td>{$row[2]}</td>
           <td>{$row[1]}</td>
+          <td>{$row[2]}</td>
+          <td>{$row[3]}</td>
         </tr>\n";
       }
     ?>
