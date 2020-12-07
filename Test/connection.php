@@ -40,6 +40,8 @@
             <td>{$row[3]}</td>
           </div>";
         }
+
+        mysqli_close($dbconnect);
       ?>
     </div>
   </body>
