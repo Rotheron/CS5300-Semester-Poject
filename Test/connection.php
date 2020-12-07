@@ -19,35 +19,28 @@
       }
     ?>
 
-    <table border="1" align="center">
-    <tr>
-      <td>Title</td>
-      <td>Author</td>
-      <td>Price</td>
-      <td>ID</td>
-    </tr>
- 
-    <?php
+    <div id="allBookWrapper"> 
+      <?php
+        $all_book_query ="SELECT Book.Title, AUTHOR.Name, Book.Price, Book.Book_ID FROM BOOKS as Book
+                            NATURAL JOIN AUTHOR_BOOK
+                            JOIN AUTHOR on AUTHOR.AUTHOR_ID = AUTHOR_BOOK.Author_ID
+                            WHERE Book.Title IS NOT NULL
+                          ORDER BY Title";
 
-      $all_book_query ="SELECT Book.Title, AUTHOR.Name, Book.Price, Book.Book_ID FROM BOOKS as Book
-                          NATURAL JOIN AUTHOR_BOOK
-                          JOIN AUTHOR on AUTHOR.AUTHOR_ID = AUTHOR_BOOK.Author_ID
-                          WHERE Book.Title IS NOT NULL
-                        ORDER BY Title";
+        $query = mysqli_query($dbconnect, $all_book_query)
+          or die (mysqli_error($dbconnect));
 
-      $query = mysqli_query($dbconnect, $all_book_query)
-        or die (mysqli_error($dbconnect));
-
-      while ($row = mysqli_fetch_array($query)) {
-        echo
-        "<tr>
-          <td>{$row[0]}</td>
-          <td>{$row[1]}</td>
-          <td>{$row[2]}</td>
-          <td>{$row[3]}</td>
-        </tr>\n";
-      }
-    ?>
-  </table>
+        while ($row = mysqli_fetch_array($query)) {
+          echo
+          "<div class=\"book\">
+            <img src=\"https://placekitten.com/200/139\">
+            <td>{$row[0]}</td>
+            <td>{$row[1]}</td>
+            <td>{$row[2]}</td>
+            <td>{$row[3]}</td>
+          </div>";
+        }
+      ?>
+    </div>
   </body>
 </html>
