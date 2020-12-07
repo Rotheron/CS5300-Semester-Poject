@@ -36,7 +36,20 @@
         $total_rows = mysqli_fetch_array($result)[0];
         $total_pages = ceil($total_rows / $no_of_records_per_page);
 
-        $sql = "SELECT * FROM BOOKS WHERE BOOKS.title IS NOT NULL LIMIT $offset, $no_of_records_per_page";
+        $sql = "SELECT Book.Title, AUTHOR.Name, Book.Price, Book.Book_ID FROM BOOKS as Book 
+                    NATURAL JOIN AUTHOR_BOOK
+                    JOIN AUTHOR on AUTHOR.AUTHOR_ID = AUTHOR_BOOK.Author_ID
+                    WHERE Book.Title IS NOT NULL 
+                    ORDER BY Book.Title
+                    LIMIT $offset, $no_of_records_per_page ";
+
+        if(!mysqli_query($dbconnect,$sql))
+        {
+            printf("Error: %s\n", mysqli_error($dbconnect));
+            exit();
+        }
+
+
         $res_data = mysqli_query($dbconnect,$sql);
         while($row = mysqli_fetch_array($res_data)){
             //here goes the data
