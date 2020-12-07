@@ -15,21 +15,14 @@
       $db = "cedtfh";
 
       $dbconnect=mysqli_connect($hostname,$username,$password,$db);
-
         if (isset($_GET['pageno'])) {
             $pageno = $_GET['pageno'];
         } else {
             $pageno = 1;
         }
-        $no_of_records_per_page = 10;
+        $no_of_records_per_page = 30;
         $offset = ($pageno-1) * $no_of_records_per_page;
 
-        // $conn=mysqli_connect("localhost","my_user","my_password","my_db");
-        // // Check connection
-        // if (mysqli_connect_errno()){
-        //     echo "Failed to connect to MySQL: " . mysqli_connect_error();
-        //     die();
-        // }
 
         $total_pages_sql = "SELECT COUNT(*) FROM BOOKS WHERE BOOKS.title IS NOT NULL";
         $result = mysqli_query($dbconnect,$total_pages_sql);
