@@ -1,0 +1,23 @@
+html{
+    background-color: red;
+}
+
+#allBookWrapper{
+    background-color: green;
+    text-align: center;
+}
+
+.book{
+    display: inline-block;
+    width: 14%;
+    margin-top: 3%;
+    margin-left: 2%;
+    margin-right: 2%;
+    text-align: center;
+}
+
+.bookImg{
+    width:70%;
+    height:40%;
+    background-color: red;
+}
