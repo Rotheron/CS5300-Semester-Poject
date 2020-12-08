@@ -33,7 +33,8 @@
                     NATURAL JOIN AUTHOR_BOOK
                     JOIN AUTHOR on AUTHOR.AUTHOR_ID = AUTHOR_BOOK.Author_ID
                     JOIN BOOK_INFO on BOOK_INFO.Book_Info_ID = Book.Book_Info_ID
-                    WHERE Book.Title IS NOT NULL 
+                    WHERE Book.Title IS NOT NULL
+                    AND Book.Price IS NOT NULL
                     ORDER BY Book.Title
                     LIMIT $offset, $no_of_records_per_page ";
 
@@ -55,11 +56,11 @@
                 echo
                 "<div class=\"book\">
                     <img src=\"http://covers.openlibrary.org/b/isbn/{$row[4]}.jpg\" class=\"bookImg\">
-                    <td>{$row[0]}</td>
-                    <td>{$row[1]}</td>
-                    <td>{$row[2]}</td>
-                    <td>{$row[3]}</td>
-                    <td>{$row[4]}</td>
+                    <div>{$row[0]}</div>
+                    <div>{$row[1]}</div>
+                    <div>{$row[2]}</div>
+                    <div>{$row[3]}</div>
+                    <div>{$row[4]}</div>
                 </div>";
             }
             mysqli_close($dbconnect);
