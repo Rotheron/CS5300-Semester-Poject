@@ -3,12 +3,12 @@
     <title>Pagination</title>
     <!-- Bootstrap CDN -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../CSS/pagination.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
     <?php
-
       $hostname = "cs-class-db.srv.mst.edu";
       $username = "cedtfh";
       $password = "koobpasswordkoobpassword2!";
@@ -20,7 +20,7 @@
         } else {
             $pageno = 1;
         }
-        $no_of_records_per_page = 30;
+        $no_of_records_per_page = 1;
         $offset = ($pageno-1) * $no_of_records_per_page;
 
 
@@ -41,22 +41,25 @@
             printf("Error: %s\n", mysqli_error($dbconnect));
             exit();
         }
-
-
-        $res_data = mysqli_query($dbconnect,$sql);
-        while($row = mysqli_fetch_array($res_data)){
-            //here goes the data
-            echo
-            "<div class=\"book\">
-            <img src=\"https://placekitten.com/200/139\">
-            <td>{$row[0]}</td>
-            <td>{$row[1]}</td>
-            <td>{$row[2]}</td>
-            <td>{$row[3]}</td>
-            </div>";
-        }
-        mysqli_close($dbconnect);
     ?>
+
+    <div id="allBookWrapper"> 
+        <?php
+            $res_data = mysqli_query($dbconnect,$sql);
+            while($row = mysqli_fetch_array($res_data)){
+                //here goes the data
+                echo
+                "<div class=\"book\">
+                <img src=\"https://placekitten.com/200/139\">
+                <td>{$row[0]}</td>
+                <td>{$row[1]}</td>
+                <td>{$row[2]}</td>
+                <td>{$row[3]}</td>
+                </div>";
+            }
+            mysqli_close($dbconnect);
+        ?>
+    </div>
     <ul class="pagination">
         <li><a href="?pageno=1">First</a></li>
         <li class="<?php if($pageno <= 1){ echo 'disabled'; } ?>">
