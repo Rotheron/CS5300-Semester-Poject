@@ -24,7 +24,14 @@
         $offset = ($pageno-1) * $no_of_records_per_page;
 
 
-        $total_pages_sql = "SELECT COUNT(*) FROM BOOKS WHERE BOOKS.title IS NOT NULL";
+        $total_pages_sql  = "SELECT COUNT(*) FROM BOOKS as Book 
+                            NATURAL JOIN AUTHOR_BOOK
+                            JOIN AUTHOR on AUTHOR.AUTHOR_ID = AUTHOR_BOOK.Author_ID
+                            JOIN BOOK_INFO on BOOK_INFO.Book_Info_ID = Book.Book_Info_ID
+                            WHERE Book.Title IS NOT NULL
+                            AND Book.Price IS NOT NULL";
+
+
         $result = mysqli_query($dbconnect,$total_pages_sql);
         $total_rows = mysqli_fetch_array($result)[0];
         $total_pages = ceil($total_rows / $no_of_records_per_page);
@@ -70,11 +77,12 @@
                 echo
                 "<div class=\"book\">
                     <img src=\"http://covers.openlibrary.org/b/isbn/{$row[4]}.jpg\" class=\"bookImg\">
-                    <div>{$row[0]}</div>
-                    <div>{$row[1]}</div>
-                    <div>{$row[2]}</div>
-                    <div>{$row[3]}</div>
-                    <div>{$row[4]}</div>
+                    <div class=\"bookText\">
+                        <div><p>{$row[0]}</p></div>
+                        <div><p>{$row[1]}</p></div>
+                        <div><p>{$row[2]}</p></div> 
+                        <div><p>{$row[3]}</p></div> 
+                    </div>
                 </div>";
             }
             mysqli_close($dbconnect);
