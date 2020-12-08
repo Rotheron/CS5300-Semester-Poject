@@ -20,7 +20,7 @@
         } else {
             $pageno = 1;
         }
-        $no_of_records_per_page = 1;
+        $no_of_records_per_page = 25;
         $offset = ($pageno-1) * $no_of_records_per_page;
 
 
@@ -54,12 +54,12 @@
                 #<img src={$imgJSON}> attempting some google books stuff but might not be needed
                 echo
                 "<div class=\"book\">
-                <img src=\"http://covers.openlibrary.org/b/isbn/{$row[4]}.jpg\">
-                <td>{$row[0]}</td>
-                <td>{$row[1]}</td>
-                <td>{$row[2]}</td>
-                <td>{$row[3]}</td>
-                <td>{$row[4]}</td>
+                    <img src=\"http://covers.openlibrary.org/b/isbn/{$row[4]}.jpg\" class=\"bookImg\">
+                    <td>{$row[0]}</td>
+                    <td>{$row[1]}</td>
+                    <td>{$row[2]}</td>
+                    <td>{$row[3]}</td>
+                    <td>{$row[4]}</td>
                 </div>";
             }
             mysqli_close($dbconnect);
