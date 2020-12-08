@@ -10,9 +10,9 @@
 <body>
     <?php
       $hostname = "cs-class-db.srv.mst.edu";
-      $username = "lff8gw";
-      $password = "pass";
-      $db = "lff8gw";
+      $username = "cedtfh";
+      $password = "koobpasswordkoobpassword2!";
+      $db = "cedtfh";
 
       $dbconnect=mysqli_connect($hostname,$username,$password,$db);
         if (isset($_GET['pageno'])) {
@@ -34,7 +34,8 @@
                 AND Book.Price IS NOT NULL
                 AND lower(Book.$search_param) like lower('%$search_value%')
                 ORDER BY Book.Title
-                LIMIT $offset, $no_of_records_per_page ";
+                LIMIT $offset, $no_of_records_per_page";
+
         }#if you search by author
         else if (!empty($_POST["search"]) and $_POST["search_param"] == "Name" and $_POST["search_param"] != "ISBN_10"){
             $search_value=$_POST["search"];
@@ -47,7 +48,7 @@
                 AND Book.Price IS NOT NULL
                 AND lower(AUTHOR.$search_param) like lower('%$search_value%')
                 ORDER BY Book.Title
-                LIMIT $offset, $no_of_records_per_page ";
+                LIMIT $offset, $no_of_records_per_page";
         }#if you search by isbn
         else if (!empty($_POST["search"]) and $_POST["search_param"] != "Name" and $_POST["search_param"] == "ISBN_10"){
             $search_value=$_POST["search"];
@@ -60,13 +61,14 @@
                 AND Book.Price IS NOT NULL
                 AND lower(BOOK_INFO.$search_param) like lower('%$search_value%')
                 ORDER BY Book.Title
-                LIMIT $offset, $no_of_records_per_page ";
+                LIMIT $offset, $no_of_records_per_page";
         }#take you back to home page if you search for blank text box
         else if(empty($_POST["search"]) and !isset($_GET['pageno'])) {
             header('Location: pagination.php');
             exit; 
         }
 
+        #if you are using the pagination buttons (GET requests)
         if(empty($_POST["search"])){
             $search_value = $_GET['search_value'];
             $search_param = $_GET['search_param'];
@@ -80,7 +82,7 @@
                 AND Book.Price IS NOT NULL
                 AND lower(Book.$search_param) like lower('%$search_value%')
                 ORDER BY Book.Title
-                LIMIT $offset, $no_of_records_per_page ";
+                LIMIT $offset, $no_of_records_per_page";
             }#if you are searching for author name
             else if($search_param == "Name"){
                 $sql = "SELECT Book.Title, AUTHOR.Name, Book.Price, Book.Book_ID, BOOK_INFO.ISBN_10 FROM BOOKS as Book 
@@ -91,7 +93,7 @@
                 AND Book.Price IS NOT NULL
                 AND lower(AUTHOR.$search_param) like lower('%$search_value%')
                 ORDER BY Book.Title
-                LIMIT $offset, $no_of_records_per_page ";
+                LIMIT $offset, $no_of_records_per_page";
             }#if you are searching for isbn
             else if($search_param == "ISBN_10"){
                 $sql = "SELECT Book.Title, AUTHOR.Name, Book.Price, Book.Book_ID, BOOK_INFO.ISBN_10 FROM BOOKS as Book 
@@ -102,15 +104,15 @@
                 AND Book.Price IS NOT NULL
                 AND lower(BOOK_INFO.$search_param) like lower('%$search_value%')
                 ORDER BY Book.Title
-                LIMIT $offset, $no_of_records_per_page ";
+                LIMIT $offset, $no_of_records_per_page";
             }
         }
 
-        $total_pages_sql = "SELECT COUNT(*) FROM BOOKS WHERE BOOKS.title IS NOT NULL AND lower(BOOKS.Title) like lower('%$search_value%')";
-        $result = mysqli_query($dbconnect,$total_pages_sql);
-        $total_rows = mysqli_fetch_array($result)[0];
+        //Get # of rows returned for whatever query we're running
+        $sql2 = substr($sql, 0, strpos($sql, "LIMIT"));     //Make sql2 return all rows, not the $offset we have above (that's for pagination and stuff...)
+        $result = mysqli_query($dbconnect,$sql2);
+        $total_rows = mysqli_num_rows($result); 
         $total_pages = ceil($total_rows / $no_of_records_per_page);
-
         if(!mysqli_query($dbconnect,$sql))
         {
             printf("Error: %s\n", mysqli_error($dbconnect));
@@ -125,7 +127,7 @@
         <select id="search_param" name="search_param">
             <option value="Title">Title</option>
             <option value="Name">Author</option>
-            <option value="Book">Book ID</option>
+            <option value="Book_ID">Book ID</option>
             <option value="ISBN_10">ISBN</option>
         </select>
         </form>

@@ -10,9 +10,9 @@
 <body>
     <?php
       $hostname = "cs-class-db.srv.mst.edu";
-      $username = "lff8gw";
-      $password = "pass";
-      $db = "lff8gw";
+      $username = "cedtfh";
+      $password = "koobpasswordkoobpassword2!";
+      $db = "cedtfh";
 
       $dbconnect=mysqli_connect($hostname,$username,$password,$db);
         if (isset($_GET['pageno'])) {
