@@ -10,9 +10,9 @@
 <body>
     <?php
       $hostname = "cs-class-db.srv.mst.edu";
-      $username = "cedtfh";
-      $password = "koobpasswordkoobpassword2!";
-      $db = "cedtfh";
+      $username = "lff8gw";
+      $password = "pass";
+      $db = "lff8gw";
 
       $dbconnect=mysqli_connect($hostname,$username,$password,$db);
         if (isset($_GET['pageno'])) {
@@ -45,9 +45,23 @@
         }
     ?>
 
+    <div id="searchWrapper">
+        <form action="search.php" method="post">
+        <input id="search" name="search" type="text" placeholder="Type here">
+        <input id="submit" type="submit" value="Search">
+        <select id="search_param" name="search_param">
+            <option value="Title">Title</option>
+            <option value="Name">Author</option>
+            <option value="Book_ID">Book ID</option>
+            <option value="ISBN_10">ISBN</option>
+        </select>
+        </form>
+
+    </div>
 
     <div id="allBookWrapper"> 
         <?php
+            #if the search button has been clicked, change the query to search
             $res_data = mysqli_query($dbconnect,$sql);
             while($row = mysqli_fetch_array($res_data)){
                 //here goes the data
