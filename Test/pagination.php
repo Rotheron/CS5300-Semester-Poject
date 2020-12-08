@@ -10,9 +10,9 @@
     <?php
 
       $hostname = "cs-class-db.srv.mst.edu";
-      $username = "cedtfh";
-      $password = "koobpasswordkoobpassword2!";
-      $db = "cedtfh";
+      $username = "user";
+      $password = "pass";
+      $db = "dbname";
 
       $dbconnect=mysqli_connect($hostname,$username,$password,$db);
         if (isset($_GET['pageno'])) {
@@ -29,9 +29,10 @@
         $total_rows = mysqli_fetch_array($result)[0];
         $total_pages = ceil($total_rows / $no_of_records_per_page);
 
-        $sql = "SELECT Book.Title, AUTHOR.Name, Book.Price, Book.Book_ID FROM BOOKS as Book 
+        $sql = "SELECT Book.Title, AUTHOR.Name, Book.Price, Book.Book_ID, BOOK_INFO.ISBN_10 FROM BOOKS as Book 
                     NATURAL JOIN AUTHOR_BOOK
                     JOIN AUTHOR on AUTHOR.AUTHOR_ID = AUTHOR_BOOK.Author_ID
+                    JOIN BOOK_INFO on BOOK_INFO.Book_Info_ID = Book.Book_Info_ID
                     WHERE Book.Title IS NOT NULL 
                     ORDER BY Book.Title
                     LIMIT $offset, $no_of_records_per_page ";
@@ -43,16 +44,20 @@
         }
 
 
+
         $res_data = mysqli_query($dbconnect,$sql);
         while($row = mysqli_fetch_array($res_data)){
             //here goes the data
+            #$imgJSON=\"https://www.googleapis.com/books/v1/volumes?q=isbn:\"{$row[4]}
+            #<img src={$imgJSON}> attempting some google books stuff but might not be needed
             echo
             "<div class=\"book\">
-            <img src=\"https://placekitten.com/200/139\">
+            <img src=\"http://covers.openlibrary.org/b/isbn/{$row[4]}.jpg\">
             <td>{$row[0]}</td>
             <td>{$row[1]}</td>
             <td>{$row[2]}</td>
             <td>{$row[3]}</td>
+            <td>{$row[4]}</td>
             </div>";
         }
         mysqli_close($dbconnect);
