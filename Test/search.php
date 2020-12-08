@@ -10,9 +10,9 @@
 <body>
     <?php
       $hostname = "cs-class-db.srv.mst.edu";
-      $username = "lff8gw";
+      $username = "ztbmwf";
       $password = "pass";
-      $db = "lff8gw";
+      $db = "ztbmwf";
 
       $dbconnect=mysqli_connect($hostname,$username,$password,$db);
         if (isset($_GET['pageno'])) {
@@ -142,11 +142,12 @@
                 echo
                 "<div class=\"book\">
                     <img src=\"http://covers.openlibrary.org/b/isbn/{$row[4]}.jpg\" class=\"bookImg\">
-                    <div>{$row[0]}</div>
-                    <div>{$row[1]}</div>
-                    <div>{$row[2]}</div>
-                    <div>{$row[3]}</div>
-                    <div>{$row[4]}</div>
+                    <div class=\"bookText\">
+                        <div><p>{$row[0]}</p></div>
+                        <div><p>{$row[1]}</p></div>
+                        <div><p>{$row[2]}</p></div>
+                        <div><p>{$row[3]}</p></div>
+                    </div>
                 </div>";
             }
             mysqli_close($dbconnect);
