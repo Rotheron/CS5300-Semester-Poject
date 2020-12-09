@@ -162,6 +162,15 @@
         <li class="<?php if($pageno <= 1){ echo 'disabled'; } ?>">
             <a href="<?php if($pageno <= 1){ echo '#'; } else { echo "?pageno=".($pageno - 1)."&search_value=".$search_value."&search_param=".$search_param; } ?>">Prev</a>
         </li>
+
+        <!-- Dynamically Generate the "in-between" pagination numbers -->
+        <?php
+            for ($i=2; $i<=$total_pages; $i++)
+            {
+                echo "<li><a href=\"?pageno=".$i."&search_value=".$search_value."&search_param=".$search_param."\">".$i."</a></li>";
+            }
+        ?>
+
         <li class="<?php if($pageno >= $total_pages){ echo 'disabled'; } ?>">
             <a href="<?php if($pageno >= $total_pages){ echo '#'; } else { echo "?pageno=".($pageno + 1)."&search_value=".$search_value."&search_param=".$search_param; } ?>">Next</a>
         </li>
