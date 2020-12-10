@@ -4,8 +4,11 @@
     <!-- Bootstrap CDN -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="../CSS/pagination.css">
+    <link rel="stylesheet" href="../Libraries/Glider.js-master/glider.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="../Libraries/Glider.js-master/glider.js"></script>
+    <script src="../Scripts/my_script.js"></script>
 </head>
 <body>
     <?php
@@ -91,23 +94,36 @@
 
 
     <ul class="pagination">
-        <li><a href="?pageno=1">First</a></li>
+        <!-- <li><a href="?pageno=1">First</a></li>
         <li class="<?php if($pageno <= 1){ echo 'disabled'; } ?>">
             <a href="<?php if($pageno <= 1){ echo '#'; } else { echo "?pageno=".($pageno - 1); } ?>">Prev</a>
-        </li>
-
-        <!-- Dynamically Generate the "in-between" pagination numbers -->
-        <?php
-            for ($i=2; $i<=$total_pages; $i++)
-            {
-                echo "<li><a href=\"?pageno=".$i."\">".$i."</a></li>";
-            }
-        ?>
-
+        </li> -->
+<!-- 
         <li class="<?php if($pageno >= $total_pages){ echo 'disabled'; } ?>">
             <a href="<?php if($pageno >= $total_pages){ echo '#'; } else { echo "?pageno=".($pageno + 1); } ?>">Next</a>
         </li>
-        <li><a href="?pageno=<?php echo $total_pages; ?>">Last</a></li>
+        <li><a href="?pageno=<?php echo $total_pages; ?>">Last</a></li> -->
     </ul>
+
+
+
+    <div class="glider-contain">
+        <div class="glider">
+        <!-- Dynamically Generate the "in-between" pagination numbers -->
+            <?php
+                for ($i=1; $i<=$total_pages; $i++)
+                {
+                    echo "<div class=\"pagination_link_wrapper\">";
+                    echo "<a class=\"pagination_link\" href=\"?pageno=".$i."\">".$i."</a></div>\n";
+                }
+            ?> 
+        </div>
+        
+            <button aria-label="Previous" class="glider-prev">«</button>
+            <button aria-label="Next" class="glider-next">»</button>
+            <div role="tablist" class="dots"></div>
+    </div>
+
+
 </body>
 </html>

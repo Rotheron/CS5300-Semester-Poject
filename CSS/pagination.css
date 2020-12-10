@@ -54,3 +54,17 @@ html{
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.pagination_link{
+    text-decoration: none;
+    display: block;
+}
+
+.glider-container{
+    text-align: center;
+    overflow-x: hidden;
+}
+
+.glider{
+    text-align: center;
+}
