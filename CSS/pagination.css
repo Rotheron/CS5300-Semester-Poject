@@ -56,7 +56,6 @@ html{
     text-overflow: ellipsis;
 }
 
-<<<<<<< HEAD
  /* The Modal (background) */
  .modal {
     display: none; /* Hidden by default */
@@ -94,7 +93,6 @@ html{
     text-decoration: none;
     cursor: pointer;
   } 
-=======
 .pagination_link{
     text-decoration: none;
     display: block;
@@ -123,4 +121,3 @@ html{
     /* scrollbar-width: thin; */
     scrollbar-color: #34c3eb #03123d;
 }
->>>>>>> 0e03af5bbb7e1daf9f6a384cf0607ae1c91ca9f0
