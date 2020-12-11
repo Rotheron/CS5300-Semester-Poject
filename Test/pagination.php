@@ -3,8 +3,8 @@
     <title>Pagination</title>
     <!-- Bootstrap CDN -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../CSS/pagination.css">
     <link rel="stylesheet" href="../Libraries/Glider.js-master/glider.css">
+    <link rel="stylesheet" href="../CSS/pagination.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="../Libraries/Glider.js-master/glider.js"></script>
@@ -119,8 +119,8 @@
             ?> 
         </div>
         
-            <button aria-label="Previous" class="glider-prev">«</button>
-            <button aria-label="Next" class="glider-next">»</button>
+            <!-- <button aria-label="Previous" class="glider-prev">«</button>
+            <button aria-label="Next" class="glider-next">»</button> -->
             <div role="tablist" class="dots"></div>
     </div>
 

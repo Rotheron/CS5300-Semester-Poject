@@ -58,13 +58,28 @@ html{
 .pagination_link{
     text-decoration: none;
     display: block;
+    border-radius: 20px;
+    /* background-color: red; */
+    background-color: rgba(30,30,30,.3);
+    color: black;
 }
 
 .glider-container{
+    display: block;
     text-align: center;
     overflow-x: hidden;
+    width:40%;
 }
 
 .glider{
     text-align: center;
+}
+
+.glider-contain{
+    width: 40%;
+}
+
+.glider.draggable{
+    /* scrollbar-width: thin; */
+    scrollbar-color: #34c3eb #03123d;
 }
