@@ -18,7 +18,7 @@ html{
     margin-right: 2%;
     margin-bottom: 2%;
     text-align: center;
-    
+    border-radius: 10px;
 }
 
 .bookText{
@@ -29,9 +29,8 @@ html{
     border-top-style: solid;
     border-width: 2px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    border-radius:10px;
     padding: 10px;
-    
+    border-radius:10px;
 }
 
 .bookImg{
@@ -44,21 +43,20 @@ html{
     background-color:#ebebeb;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     border-radius: 10px;
-
 }
 
 .book:hover{
     box-shadow: 0 4px 8px 0 rgba(14, 97, 175, 0.575), 0 6px 20px 0 rgba(14, 97, 175, 0.575);
-
 }
 
-p{
+.bookText p{
     margin: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
+<<<<<<< HEAD
  /* The Modal (background) */
  .modal {
     display: none; /* Hidden by default */
@@ -96,3 +94,33 @@ p{
     text-decoration: none;
     cursor: pointer;
   } 
+=======
+.pagination_link{
+    text-decoration: none;
+    display: block;
+    border-radius: 20px;
+    /* background-color: red; */
+    background-color: rgba(30,30,30,.3);
+    color: black;
+}
+
+.glider-container{
+    display: block;
+    text-align: center;
+    overflow-x: hidden;
+    width:40%;
+}
+
+.glider{
+    text-align: center;
+}
+
+.glider-contain{
+    width: 40%;
+}
+
+.glider.draggable{
+    /* scrollbar-width: thin; */
+    scrollbar-color: #34c3eb #03123d;
+}
+>>>>>>> 0e03af5bbb7e1daf9f6a384cf0607ae1c91ca9f0
