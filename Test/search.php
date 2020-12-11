@@ -125,9 +125,11 @@
     ?>
 
     <div id="searchWrapper">
-        <form action="search.php" method="post">
-        <input id="search" name="search" type="text" placeholder="Type here">
-        <input id="submit" type="submit" value="Search">
+        <form action="search.php" method="post" class="search" id="search">
+        <input id="search" name="search" class="searchTerm" type="text" placeholder="Type here">
+        <button type="submit" form="search" class="searchButton">
+            <i class="fa fa-search"></i>
+        </button>
         <select id="search_param" name="search_param">
             <option value="Title">Title</option>
             <option value="Name">Author</option>
@@ -135,7 +137,6 @@
             <option value="ISBN_10">ISBN</option>
         </select>
         </form>
-
     </div>
 
     <div id="allBookWrapper"> 
