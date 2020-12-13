@@ -130,6 +130,7 @@ window.onclick = function(event){
     <!-- Modal content -->
         <div class="modal-content">
             <span class="close" onclick="spanClick()">&times;</span>
+        </div>
     </div>
 
     <ul class="pagination">

@@ -7,6 +7,7 @@ body{
   background-repeat: no-repeat; 
   background-size:cover; 
 }
+
 #allBookWrapper{
     background-image: url("vignette.png");
     background-color: #cccccc;
@@ -64,6 +65,7 @@ body{
  /* The Modal (background) */
  .modal {
     display: none; /* Hidden by default */
+    margin: 0 auto;
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
     left: 0;
@@ -81,7 +83,7 @@ body{
     margin: 15% auto; /* 15% from the top and centered */
     padding: 20px;
     border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
+    width: 50%; /* Could be more or less, depending on screen size */
   }
   
   /* The Close Button */
@@ -164,4 +166,38 @@ body{
 .glider.draggable{
     /* scrollbar-width: thin; */
     scrollbar-color: #34c3eb #03123d;
+}
+
+
+.modalBook{
+  display: block;
+  width: 20%;
+  margin: 0 auto;
+  margin-top: 10%;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.modalBookText{
+  font-size: 15px;
+  display: inline-block;
+  width:100%;
+  background-color: #ebebeb;
+  border-top-style: solid;
+  border-width: 2px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  padding: 10px;
+  border-radius:10px;
+}
+
+.modalBookImg{
+  width:100%;
+  height:50%;
+  background-image: url("no_preview.png");
+  background-position: center; 
+  background-repeat: no-repeat; 
+  background-size:contain; 
+  background-color:#ebebeb;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 10px;
 }

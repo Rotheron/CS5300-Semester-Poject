@@ -18,14 +18,22 @@ $book_info = "SELECT Book.Title, AUTHOR.Name, Book.Price, Book.Book_ID, BOOK_INF
                     ORDER BY Book.Title ";
 $res_data = mysqli_query($dbconnect,$book_info)or die(mysqli_error($dbconnect));
 while($row = mysqli_fetch_array($res_data)){
-    echo "<img src=\"http://covers.openlibrary.org/b/isbn/{$row[4]}.jpg\" class=\"bookImg\">
-        <div class=\"bookText\">
-            <div><p>{$row[0]}</p></div>
-            <div><p>{$row[1]}</p></div>
-            <div><p>{$row[2]}</p></div> 
-            <div><p>{$row[3]}</p></div>
-            <div><p>{$row[4]}</p></div> 
-            <div><p>{$row[5]}</p></div> 
+    for ($x = 0; $x <= 5; $x++) {
+        if($row[$x] == ""){
+            $row[$x] = "N/A";
+        }
+      } 
+    echo "
+        <div class=\"modalBook\">
+            <img src=\"http://covers.openlibrary.org/b/isbn/{$row[4]}.jpg\" class=\"modalBookImg\">
+            <div class=\"modalBookText\">
+                <div><p>Title: {$row[0]}</p></div>
+                <div><p>Author: {$row[1]}</p></div>
+                <div><p>Price: {$row[2]}</p></div> 
+                <div><p>Book ID: {$row[3]}</p></div>
+                <div><p>ISBN: {$row[4]}</p></div> 
+                <div><p>Publish Date: {$row[5]}</p></div> 
+            </div>
         </div>";                    
 }
 ?>

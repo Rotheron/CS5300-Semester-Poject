@@ -178,6 +178,11 @@ window.onclick = function(event){
             #if the search button has been clicked, change the query to search
             $res_data = mysqli_query($dbconnect,$sql);
             while($row = mysqli_fetch_array($res_data)){
+                for ($x = 0; $x <= 3; $x++) {
+                    if($row[$x] == ""){
+                        $row[$x] = "N/A";
+                    }
+                  } 
                 //here goes the data
                 #$imgJSON=\"https://www.googleapis.com/books/v1/volumes?q=isbn:\"{$row[4]}
                 #<img src={$imgJSON}> attempting some google books stuff but might not be needed
@@ -199,6 +204,7 @@ window.onclick = function(event){
     <!-- Modal content -->
         <div class="modal-content">
             <span class="close" onclick="spanClick()">&times;</span>
+        </div>
     </div>
 
 
