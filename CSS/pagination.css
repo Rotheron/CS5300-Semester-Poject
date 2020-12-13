@@ -1,7 +1,12 @@
 html{
     background-color:  #cccccc;
 }
-
+body{
+  background-image: url("vignette.png");
+  background-position: center; 
+  background-repeat: no-repeat; 
+  background-size:cover; 
+}
 #allBookWrapper{
     background-image: url("vignette.png");
     background-color: #cccccc;
@@ -116,7 +121,7 @@ html{
 
 .search {
   width: 100%;
-  position: relative;
+  padding-top: 50px;
   display: flex;
 }
 
@@ -149,10 +154,7 @@ html{
 
 #searchWrapper{
   width: 30%;
-  position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  margin: 0 auto;
 }
 
 .glider-contain{
