@@ -4,14 +4,48 @@
     <!-- Bootstrap CDN -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="../Libraries/Glider.js-master/glider.css">
+    <link rel="stylesheet" href="../font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="../CSS/pagination.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="../Libraries/Glider.js-master/glider.js"></script>
+        <script src="../Libraries/Glider.js-master/glider.js"></script>
     <script src="../Scripts/my_script.js"></script>
-
 </head>
 <body>
+<script src="http://code.jquery.com/jquery.js"></script>
+<script type="text/javascript">
+var modal = document.getElementById("myModal");
+var span = document.getElementsByClassName("close");
+var book = document.getElementsByClassName("book");
+ function bookClick(BookID){
+    // var modal = document.getElementById("myModal");
+    // modal.style.display = "block";
+    
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            var modal = document.getElementById("myModal");
+            modal.style.display = "block";
+            modal.innerHTML = this.responseText;
+        }        
+    };
+
+    var getMe = $(BookID).find('.bookID').text()
+    xhttp.open("GET", "book_info.php?BookID="+getMe, true);
+    xhttp.send();
+}
+ function spanClick(){
+    var modal = document.getElementById("myModal");
+    var span = document.getElementsByClassName("close");
+    modal.style.display = "none";
+}
+window.onclick = function(event){
+    var modal = document.getElementById("myModal");
+    if(event.target == modal){
+        modal.style.display = "none";
+    }
+}
+</script>
     <?php
       $hostname = "cs-class-db.srv.mst.edu";
       $username = "cedtfh";
@@ -140,25 +174,31 @@
     </div>
 
     <div id="allBookWrapper"> 
-        <?php 
+        <?php
+            #if the search button has been clicked, change the query to search
             $res_data = mysqli_query($dbconnect,$sql);
             while($row = mysqli_fetch_array($res_data)){
                 //here goes the data
                 #$imgJSON=\"https://www.googleapis.com/books/v1/volumes?q=isbn:\"{$row[4]}
                 #<img src={$imgJSON}> attempting some google books stuff but might not be needed
                 echo
-                "<div class=\"book\">
+                "<div class=\"book\" onclick=\"bookClick(this)\">
                     <img src=\"http://covers.openlibrary.org/b/isbn/{$row[4]}.jpg\" class=\"bookImg\">
                     <div class=\"bookText\">
                         <div><p>{$row[0]}</p></div>
                         <div><p>{$row[1]}</p></div>
-                        <div><p>{$row[2]}</p></div>
-                        <div><p>{$row[3]}</p></div>
+                        <div><p>{$row[2]}</p></div> 
+                        <div><p class=\"bookID\">{$row[3]}</p></div> 
                     </div>
                 </div>";
             }
-            mysqli_close($dbconnect);
         ?>
+    </div>
+
+    <div id="myModal" class="modal">
+    <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close" onclick="spanClick()">&times;</span>
     </div>
 
 
