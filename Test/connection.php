@@ -6,9 +6,9 @@
   <body>
     <?php
       $hostname = "cs-class-db.srv.mst.edu";
-      $username = "cedtfh";
-      $password = "koobpasswordkoobpassword2!";
-      $db = "cedtfh";
+      $username = "ztbmwf";
+      $password = "pass!";
+      $db = "ztbmwf";
 
 
 
